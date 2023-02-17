@@ -3,5 +3,5 @@
     "repetitions_free_choice": 1,
     "repetitions_forced_choice": 1,
     "forced_grasp_colours": ["yellow", "blue"],
-    "scale_question": "How comfortable was the grasp? 1 - very uncomfortable, 10 - very comfortable"
+    "scale_question": "How comfortable was the grasp?\n1 - very uncomfortable, 10 - very comfortable"
 }
