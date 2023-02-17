@@ -211,10 +211,6 @@ for trial, i in enumerate(conditions):
 
     pd.DataFrame.from_dict(data_log).to_csv(filename, index=False)
 
-    
-
-
-
 print(key_pressed)
 
 win.close()
