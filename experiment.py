@@ -28,12 +28,14 @@ scale_q = params["scale_question"]
 sub_info = {
     "ID (sub-00x)": "sub-000",
     "gender (m/f/o)": "o",
-    "age": "69"
+    "age": "69",
+    "object": "bar"
 }
 
 subject = sub_info["ID (sub-00x)"]
 gender = sub_info["gender (m/f/o)"]
 age = int(sub_info["age"])
+object = sub_info["object"]
 
 prompt = gui.DlgFromDict(
     dictionary=sub_info, 
@@ -46,6 +48,7 @@ data_log = {
     "subject_id": [],
     "gender": [],
     "age": [],
+    "object": [],
     "task_type": [],
     "trial": [],
     "angle": [],
@@ -204,6 +207,7 @@ for trial, i in enumerate(conditions):
     data_log["subject_id"].append(subject)
     data_log["gender"].append(gender)
     data_log["age"].append(age)
+    data_log["object"].append(object)
     data_log["task_type"].append(trial_type)
     data_log["trial"].append(trial)
     data_log["angle"].append(angle)
