@@ -28,17 +28,20 @@ scale_q = params["scale_question"]
 sub_info = {
     "ID (sub-00x)": "sub-000",
     "gender (m/f/o)": "o",
-    "age": "69"
+    "age": "69",
+    "object": "bar"
 }
 
-subject = sub_info["ID (sub-00x)"]
-gender = sub_info["gender (m/f/o)"]
-age = int(sub_info["age"])
 
 prompt = gui.DlgFromDict(
     dictionary=sub_info, 
     title="SUBJECT INFO"
 )
+
+subject = sub_info["ID (sub-00x)"]
+gender = sub_info["gender (m/f/o)"]
+age = int(sub_info["age"])
+object = sub_info["object"]
 
 timestamp = str(datetime.timestamp(datetime.now()))
 
@@ -46,10 +49,12 @@ data_log = {
     "subject_id": [],
     "gender": [],
     "age": [],
+    "object": [],
     "task_type": [],
     "trial": [],
     "angle": [],
-    "colour": []
+    "colour": [],
+    "rating": []
 }
 
 
@@ -74,7 +79,7 @@ win.mouseVisible = False
 text_stim = visual.TextStim(
     win,
     text="",
-    height=0.5,
+    height=2,
     color="white",
     pos=(0, 0),
     anchorHoriz="center", 
@@ -84,7 +89,7 @@ text_stim = visual.TextStim(
 text_scale = visual.TextStim(
     win,
     text="",
-    height=2.5,
+    height=2,
     color="red",
     pos=(0, -5),
     anchorHoriz="center", 
@@ -114,8 +119,9 @@ elif "0" in key_pressed:
     trial_type = "forced"
     conditions = generate_trials(angles, reps_free, type=trial_type)
     
-filename = "{}_grasp-{}_{}.csv".format(
+filename = "{}_grasp-{}_{}_{}.csv".format(
     subject,
+    object,
     trial_type,
     timestamp
 )
@@ -173,6 +179,7 @@ for trial, i in enumerate(conditions):
 
     current_key = "waiting for response"
     response = False
+    rating = None
     event.clearEvents()
     while True:
         key_pressed = event.getKeys(
@@ -180,14 +187,15 @@ for trial, i in enumerate(conditions):
             modifiers=False, 
             timeStamped=False
         )
-
+        
         if len(key_pressed) > 0:
             response = True
             current_key = key_pressed[0]
+            
             if current_key == "0":
                 current_key = 10
-
-     
+    
+                 
         text_stim.text = "{}\n\nPress (c) to validate the choice\nand continue to next trial \nor\n\n press (z) to quit".format(scale_q)
         text_stim.draw()
         text_scale.text = current_key
@@ -200,14 +208,18 @@ for trial, i in enumerate(conditions):
         elif "z" in key_pressed:
             win.close()
             core.quit()
+        else:
+            rating = current_key
 
     data_log["subject_id"].append(subject)
     data_log["gender"].append(gender)
     data_log["age"].append(age)
+    data_log["object"].append(object)
     data_log["task_type"].append(trial_type)
     data_log["trial"].append(trial)
     data_log["angle"].append(angle)
     data_log["colour"].append(colour)
+    data_log["rating"].append(rating)
 
     pd.DataFrame.from_dict(data_log).to_csv(filename, index=False)
 
